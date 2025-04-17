@@ -1,5 +1,19 @@
-const apiKey = '';
+const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
 const city = 'Los Angeles';
+
+function updateScene(condition) {
+    document.getElementById('clouds').style.display = 'none';
+    document.getElementById('rain').style.display = 'none';
+    document.getElementById('sun').style.display = 'none';
+
+    if (condition.includes('rain')) {
+        document.getElementById('rain').style.display = 'block';
+    } else if (condition.includes('clear')) {
+        document.getElementById('sun').style.display = 'block';
+    } else if (condition.includes('cloud')) {
+        document.getElementById('clouds').style.display = 'block';
+    }
+}
 
 async function getWeather() {
     const res = await fetch(
@@ -16,5 +30,7 @@ async function getWeather() {
     } else if (data.weather[0].main.toLowerCase().includes('clear')) {
         document.body.style.background = 'linear-gradient(to top, #fceabb, #f8b500)';
     }
+
+    updateScene(data.weather[0].description.toLowerCase());
 }
 getWeather();
